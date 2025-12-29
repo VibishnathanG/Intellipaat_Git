@@ -36,6 +36,7 @@ jobs:
             - name: Building Code
               run: |
                   echo "Building the application..."
+                  npm ci
                   npm run build
                   echo "Build completed."
             - name: Deploy Application

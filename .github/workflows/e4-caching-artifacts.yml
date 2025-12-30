@@ -1,11 +1,14 @@
 name: E4-caching-artifacts
 on:
+  workflow_dispatch:
   push:
     branches:
       - DEV
 jobs:
   Job-1-InstallBuild:
     runs-on: ubuntu-latest
+    outputs:
+      script-name: ${{ steps.name-publish.outputs.script-name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -13,8 +16,19 @@ jobs:
       - name: NPM Install
         run: npm ci
       
+      - name: Cache the dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Build Project
         run: npm run build
+      
+      - name: name of the jsx files
+        id: name-publish
+        run: find ./dist/assets/*.js -type f -execdir echo 'script-name={}' >> $GITHUB_OUTPUT ';' 
       
       - name: artifacts save
         uses: actions/upload-artifact@v6
@@ -24,3 +38,19 @@ jobs:
             ./dist
             package.json
 
+  Jobs-2-DownloadArtifacts:
+    runs-on: ubuntu-latest
+    needs: Job-1-InstallBuild
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: artifacts
+          path: ./dist
+      - name: List files
+        run: ls -larnt
+
+      - name: Echo the Output from Previous Job
+        run: |
+          echo "The name of the script is ${{ needs.Job-1-InstallBuild.outputs.script-name }}
+    

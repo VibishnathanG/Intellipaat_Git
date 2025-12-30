@@ -1,5 +1,5 @@
 name: E1-lint-test-deploy
-on: push
+on: workflow_dispatch
 jobs:
     linting-job-1:
         runs-on: ubuntu-latest

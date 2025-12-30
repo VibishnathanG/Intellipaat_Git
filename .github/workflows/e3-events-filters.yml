@@ -1,4 +1,4 @@
-name: e3-workf;low-test-events-filters
+name: E3-workflow-test-events-filters
 on:
     workflow_call:          # This can be called from other workflows
     workflow_dispatch:      # Manual Trigger

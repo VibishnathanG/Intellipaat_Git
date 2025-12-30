@@ -1,4 +1,4 @@
-name: e4-caching-artifacts
+name: E4-caching-artifacts
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ jobs:
         run: npm run build
       
       - name: artifacts save
-        uses: actions/artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |

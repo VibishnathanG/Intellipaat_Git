@@ -9,7 +9,7 @@ on:
                 default: 'default value'
     push:
         branches:
-        - DEV         # Trigger on pushes to main branch
+        # - DEV         # Trigger on pushes to main branch
         - feat/**      # Trigger on pushes to any feature branch - feat/chat/message ** Means all /
         - release/*    # Trigger on pushes to any release branch - release/v1.0  One * Menas one level
         tags:

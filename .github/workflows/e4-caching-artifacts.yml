@@ -1,0 +1,26 @@
+name: e4-caching-artifacts
+on:
+  push:
+    branches:
+      - DEV
+jobs:
+  Job-1-InstallBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: NPM Install
+        run: npm ci
+      
+      - name: Build Project
+        run: npm run build
+      
+      - name: artifacts save
+        uses: actions/artifacts
+        with:
+          name: artifacts
+          path: |
+            ./dist
+            package.json
+

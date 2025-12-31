@@ -1,9 +1,9 @@
 name: E4-caching-artifacts
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - DEV
+  # push:
+  #   branches:
+  #     - DEV
 jobs:
   Job-1-InstallBuild:
     runs-on: ubuntu-latest
@@ -52,5 +52,5 @@ jobs:
 
       - name: Echo the Output from Previous Job
         run: |
-          echo "The name of the script is ${{ needs.Job-1-InstallBuild.outputs.script-name }}
+          echo "The name of the script is ${{ needs.Job-1-InstallBuild.outputs.script-name }}"
     

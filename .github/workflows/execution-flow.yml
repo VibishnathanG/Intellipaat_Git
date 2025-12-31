@@ -16,7 +16,7 @@ jobs:
           path: ./node_modules/
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: jobs.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint code
         run: npm run lint
@@ -32,11 +32,13 @@ jobs:
           path: ./node_modules/
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: jobs.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test code
+        id: test-block
         run: npm run test
       - name: Upload test report
+        if: failure() && steps.test-block.outcome == 'failure'
         uses: actions/upload-artifact@v6
         with:
           name: test-report
@@ -76,3 +78,11 @@ jobs:
         run: ls
       - name: Deploy
         run: echo "Deploying..."
+
+  report:
+    needs: [lint, deploy]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Pipeline Failed
+        run: echo "Pipeline Is having issue Please Check"

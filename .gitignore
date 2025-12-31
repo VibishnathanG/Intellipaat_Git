@@ -1,3 +1,4 @@
 *.log
 *.logg
 node_modules/
+test.json

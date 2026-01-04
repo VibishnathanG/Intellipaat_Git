@@ -1,8 +1,22 @@
 name: This is a callable workflow
-on: workflow_call
+on: 
+  workflow_call:
+    inputs:
+      artifactName:
+        description: 'Name of the artifact'
+        required: true
+        type: string
+        default: 'artifact-name'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Download Package
+        uses: actions/download-artifact@v6
+        with:
+          name: ${{ inputs.artifactName }}
+      - name: LS ing files
+        run: ls -la 
       - name: Printing From callback
-        run: echo "This is called from another workflow"
+        run: echo "This is called from another workflow "

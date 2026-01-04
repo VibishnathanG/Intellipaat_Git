@@ -31,9 +31,10 @@ jobs:
 
       - name: Testing Node and Os
         run: echo "Printing Node and OS details --> ${{ matrix.node-version }} OS Name --> ${{ matrix.os }} Repo Name --> ${{ github.action_repository }}"
-      
-      - name: calling the callable
-        uses: ./.github/workflows/callable-flow.yml
+
+  call-workflow:
+    needs: matrix-J1
+    uses: ./.github/workflows/callable-flow.yml
 # jobs:
 #   lint:
 #     runs-on: ubuntu-latest

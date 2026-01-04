@@ -19,8 +19,6 @@ jobs:
         exclude:
           - node-version: 16
             os: windows-latest
-          - node-version: 18
-            os: macos-latest
           - node-version: 20
             os: ubuntu-latest
     runs-on: ${{ matrix.os }}
@@ -35,7 +33,7 @@ jobs:
         run: echo "Printing Node and OS details --> ${{ matrix.node-version }} OS Name --> ${{ matrix.os }} Repo Name --> ${{ github.action_repository }}"
       
       - name: calling the callable
-        uses: ./callable-flow.yml
+        uses: ./.github/workflow/callable-flow.yml
 # jobs:
 #   lint:
 #     runs-on: ubuntu-latest

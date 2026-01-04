@@ -1,0 +1,8 @@
+name: This is a callable workflow
+on: workflow_call
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printing From callback
+        run: echo "This is called from another workflow"

@@ -38,11 +38,17 @@ jobs:
 
 
   call-workflow:
-    needs: matrix-J1
+    needs: CI-Job
     uses: ./.github/workflows/callable-flow.yml
     with:
       artifactName: artifacts
-
+    
+  result-job:
+    needs: call-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Final Step
+        run: echo "All workflows are done successfully ${{ needs.call-workflow.outputs.result}}"
 
 
   # matrix-J1:

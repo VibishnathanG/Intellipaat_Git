@@ -7,10 +7,19 @@ on:
         required: true
         type: string
         default: 'artifact-name'
+    outputs:
+      result:
+        description: 'Result of the workflow'
+        value: ${{ jobs.deploy.outputs.result }}
+    # secrets:
+    #   github_token:
+    #     required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set-result.outputs.result }}
     steps:
       - name: Download Package
         uses: actions/download-artifact@v6
@@ -20,3 +29,6 @@ jobs:
         run: ls -la 
       - name: Printing From callback
         run: echo "This is called from another workflow "
+      - name: Setting Result
+        run: echo "result=success" >> $GITHUB_OUTPUT
+        id: set-result

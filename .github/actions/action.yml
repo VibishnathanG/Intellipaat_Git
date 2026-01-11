@@ -4,7 +4,7 @@ inputs:
   caching:
     description: "Can Cache?"
     required: true
-    default: 'true'
+    default: 'false'
 runs:
   using: 'composite'
   steps:

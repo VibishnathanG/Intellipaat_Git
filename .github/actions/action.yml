@@ -25,5 +25,5 @@ runs:
         run: |
           npm ci
           npm install
-          echo "Cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
+          echo "Cache=false" >> $GITHUB_OUTPUT
         shell: bash

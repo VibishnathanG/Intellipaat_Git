@@ -52,7 +52,7 @@ jobs:
         id: "build-cache"
         uses: ./.github/actions
         with:
-          caching: 'true'
+          caching: 'false'
       
       - name: Output Printing
         run: echo "Cache Used? ${{ steps.build-cache.outputs.used-cache }}"

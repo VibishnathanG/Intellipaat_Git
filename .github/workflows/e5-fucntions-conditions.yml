@@ -51,7 +51,7 @@ jobs:
       - name: Load cache dependencies
         uses: ./.github/actions
         with:
-          caching: true
+          caching: false
       - name: Build website
         id: build-website
         run: npm run build

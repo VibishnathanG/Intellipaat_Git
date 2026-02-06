@@ -81,6 +81,12 @@ jobs:
 
       - name: Deploy
         run: echo "Deploying..."
+  
+  information:
+    runs-on: ubuntu-latest
+    steps:
+      - name: custoom action from js
+        uses: ./.github/actions/deploy-s3-js 
 
   report:
     needs: [lint, deploy]

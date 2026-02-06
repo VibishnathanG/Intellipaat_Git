@@ -1,5 +1,4 @@
 *.log
 *.logg
-./dist/*
-dist/
+/dist
 /node_modules

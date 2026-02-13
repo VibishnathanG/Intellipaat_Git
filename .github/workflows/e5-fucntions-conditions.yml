@@ -89,7 +89,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          dist-folder: dist
+          dist-folder: dist/
           bucket: "vibish-s3-actions-2026"
 
       - name: Website URL
@@ -106,7 +106,7 @@ jobs:
         uses: ./.github/actions/deploy-s3-js
         with:
           bucket-region: none #Change the Bucket name
-          dist-folder: dist
+          dist-folder: dist/
           bucket: "vibish-s3-actions-2026"
          
 

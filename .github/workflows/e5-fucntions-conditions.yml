@@ -80,7 +80,18 @@ jobs:
         run: ls
 
       - name: Deploy
-        run: echo "Deploying..."
+        uses: ./.github/actions/deploy-s3-js
+        id: deploy-s3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        with:
+          bucket-region: none #Change the Bucket name
+          dist-folder: ./dist
+
+      - name: Website URL
+        run: |
+          echo "URL at: ${{ steps.deploy-s3.outputs.websiteUrl}}"
   
   information:
     runs-on: ubuntu-latest

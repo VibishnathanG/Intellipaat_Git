@@ -10,8 +10,8 @@ function run() {
     const region = core.getInput('bucket-region');
 
     //2) Upload the artifacts to S3
-    exec.exec(`ls -larnt`);
-    exec.exec(`aws s3 cp ${artifactPath} s3://${bucketName}/dist/ --region ${region}`);
+    exec.exec(`ls -laRnt`);
+    exec.exec(`aws s3 sync ${artifactPath} s3://${bucketName}/dist/ --region ${region}`);
 
     //3) Log the upload process
     core.notice(`Uploading artifacts from ${artifactPath} to S3 bucket ${bucketName} in region ${region}`);

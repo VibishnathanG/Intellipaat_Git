@@ -71,6 +71,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get code
+        uses: actions/checkout@v6
+      
       - name: Get build artifacts
         uses: actions/download-artifact@v6
         with:
@@ -78,7 +81,7 @@ jobs:
 
       - name: Output contents
         run: ls
-
+        
       - name: Deploy
         uses: ./.github/actions/deploy-s3-js
         id: deploy-s3

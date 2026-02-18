@@ -4,6 +4,6 @@ COPY requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY deployement.py ./deployment.py
+COPY deployment.py ./deployment.py
 
 CMD ["python", "deployment.py"]

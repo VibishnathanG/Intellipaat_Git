@@ -14,7 +14,6 @@ def run():
     for root, dirs, files in os.walk(dist_folder):
         for file in files:
             file_path = os.path.join(root, file)
-            
             s3_key = os.path.relpath(file_path, dist_folder)
             s3_client.upload_file(file_path, bucket, s3_key)
     website_url = f'http://{bucket}.s3-website-{bucket_region}.amazonaws.com'

@@ -22,3 +22,4 @@ def run():
         with open(github_output, "a") as f:
             f.write(f"website-url={website_url}\n")
 
+run()

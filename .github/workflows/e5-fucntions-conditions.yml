@@ -66,6 +66,7 @@ jobs:
         with:
           name: dist-files
           path: dist
+#Docker Actions
 
   deploy:
     needs: build
@@ -79,36 +80,49 @@ jobs:
         with:
           name: dist-files
           path: dist
+      
+      - name: Output
+        run: ls -lant
 
-      - name: Output contents
-        run: ls
-        
-      - name: Deploy
-        uses: ./.github/actions/deploy-s3-js
-        id: deploy-s3
+      - name: Docker Build
+        uses: .github/actions/deploy-s3-docker
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          dist-folder: dist
           bucket: "vibish-s3-actions-2026"
+          
 
-      - name: Website URL
-        run: |
-          echo "URL at: ${{ steps.deploy-s3.outputs.websiteUrl}}"
-  
-  information:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v6
+# Below is the Deploy with JS Actions
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get code
+  #       uses: actions/checkout@v6
 
-      - name: custom action from js
-        uses: ./.github/actions/deploy-s3-js
-        with:
-          bucket-region: none #Change the Bucket name
-          dist-folder: dist
-          bucket: "vibish-s3-actions-2026"
+  #     - name: Get build artifacts
+  #       uses: actions/download-artifact@v6
+  #       with:
+  #         name: dist-files
+  #         path: dist
+
+  #     - name: Output contents
+  #       run: ls
+        
+  #     - name: Deploy
+  #       uses: ./.github/actions/deploy-s3-js
+  #       id: deploy-s3
+  #       env:
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       with:
+  #         dist-folder: dist
+  #         bucket: "vibish-s3-actions-2026"
+
+  #     - name: Website URL
+  #       run: |
+  #         echo "URL at: ${{ steps.deploy-s3.outputs.websiteUrl}}"
          
 
   report:

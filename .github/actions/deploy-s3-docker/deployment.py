@@ -10,7 +10,7 @@ def run():
     s3_client_Details = s3_client.get_bucket_location(Bucket=bucket)
     if github_output_1:
         with open(github_output_1, "a") as f:
-            f.write(f"bucket={s3_client_Details}\n")
+            f.write(f"bucket_v={s3_client_Details}\n")
     for root, dirs, files in os.walk(dist_folder):
         for file in files:
             file_path = os.path.join(root, file)

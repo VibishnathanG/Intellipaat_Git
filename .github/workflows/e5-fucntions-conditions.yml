@@ -93,10 +93,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
           bucket: "vibish-s3-actions-2026"
-      
+          folder_path: dist
+
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+
       - name: Output Printing
         run: |
-          echo "Bucket: ${{ steps.docker-deploy.outputs.bucket_v }}"
+          echo "Bucket: ${{ steps.docker-deploy.outputs }}"
 
 
 # #Docker Actions

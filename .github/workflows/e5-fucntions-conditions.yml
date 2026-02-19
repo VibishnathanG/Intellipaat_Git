@@ -95,9 +95,9 @@ jobs:
           bucket: "vibish-s3-actions-2026"
           folder_path: dist
 
-      - name: Dump docker logs on failure
-        if: failure()
-        uses: jwalton/gh-docker-logs@v2
+      # - name: Dump docker logs on failure
+      #   if: failure()
+      #   uses: jwalton/gh-docker-logs@v2
 
       - name: Output Printing
         run: |

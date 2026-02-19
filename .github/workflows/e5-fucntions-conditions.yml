@@ -86,7 +86,7 @@ jobs:
         run: ls -lant
 
       - name: Docker Build
-        uses: VibishnathanG/github-actions-awsS3@v1
+        uses: VibishnathanG/github-actions-awsS3@v2
         id: docker-deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

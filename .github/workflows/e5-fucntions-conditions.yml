@@ -1,5 +1,5 @@
 name: E5 Caching and Action call
-# on:
+on: workflow_dispatch
 #   push:
 #     branches:
 #       - DEV

@@ -1,7 +1,7 @@
 name: E2-issue-triggered-workflow
-on:
-  issues:
-    types: [opened, edited, milestoned]
+# on:
+#   issues:
+#     types: [opened, edited, milestoned]
 jobs:
   issue_job:
     runs-on: ubuntu-latest

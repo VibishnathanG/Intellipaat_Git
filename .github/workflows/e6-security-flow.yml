@@ -9,7 +9,7 @@ jobs:
       - name: Assign Label
         run: |
           issue_title = "${{ github.event.issue.title }}"
-          if [[ "$issue_title" == *"bug"*]]; then
+          if [[ "$issue_title" == *"bug"* ]]; then
           echo "Issue with Bug Found"
           elif [[ "$issue_title" == *"security"* ]]; then
           echo "Security Issue Found"

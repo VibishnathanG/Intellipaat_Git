@@ -6,7 +6,7 @@ jobs:
   assign-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign Label
+      - name: Output Issue Title
         run: |
           issue_title="${{ github.event.issue.title }}"
           echo $issue_title
@@ -17,3 +17,12 @@ jobs:
           else
           echo "Other Issue"
           fi
+      
+      - name: Assign Lable    
+        run: |
+          curl -X POST \
+          --url https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+          -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          -H 'content-type: application/json' \
+          -d '{ "labels": ["security"] }' \
+          --fail

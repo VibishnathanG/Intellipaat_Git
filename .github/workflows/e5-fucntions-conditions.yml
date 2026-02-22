@@ -1,8 +1,8 @@
 name: E5 Caching and Action call
-on:
-  push:
-    branches:
-      - DEV
+# on:
+#   push:
+#     branches:
+#       - DEV
 jobs:
   lint:
     runs-on: ubuntu-latest

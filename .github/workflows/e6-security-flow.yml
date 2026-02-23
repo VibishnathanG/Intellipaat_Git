@@ -30,3 +30,8 @@ jobs:
           -H 'content-type: application/json' \
           -d '{ "labels": ["security"] }' \
           --fail
+
+      - name: Testing Script Injection
+        run: |
+          echo "Issue Title: ${{ github.event.issue.title }}"
+        

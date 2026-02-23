@@ -83,7 +83,9 @@ jobs:
           path: dist
       
       - name: Output
-        run: ls -lant
+        run: |
+          ls -lant
+          echo ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4

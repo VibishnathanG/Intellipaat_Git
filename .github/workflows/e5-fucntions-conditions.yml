@@ -95,7 +95,7 @@ jobs:
       - name: Get AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: "S3-Full-Access-OIDC-GITHUB"
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Docker Build

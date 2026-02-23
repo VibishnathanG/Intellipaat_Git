@@ -31,7 +31,9 @@ jobs:
           -d '{ "labels": ["security"] }' \
           --fail
 
-      - name: Testing Script Injection
-        run: |
-          echo "Issue Title: ${{ github.event.issue.title }}"
+# Below is For Testing Script Injection This can be avoided with storing this first as ENV and Using or by input Validation
+
+      # - name: Testing Script Injection
+      #   run: |
+      #     echo "Issue Title: ${{ github.event.issue.title }}"
         

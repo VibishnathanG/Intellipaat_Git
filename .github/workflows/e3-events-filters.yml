@@ -1,0 +1,41 @@
+name: E3-workflow-test-events-filters
+on:
+    workflow_call:          # This can be called from other workflows
+    workflow_dispatch:      # Manual Trigger
+        inputs:
+            example_input:
+                description: 'An example input for the workflow'
+                required: false
+                default: 'default value'
+    push:
+        branches:
+        # - DEV         # Trigger on pushes to main branch
+        - feat/**      # Trigger on pushes to any feature branch - feat/chat/message ** Means all /
+        - release/*    # Trigger on pushes to any release branch - release/v1.0  One * Menas one level
+        tags:
+        - 'v*.*.*'     # Trigger on tags following semantic versioning pattern
+        paths-ignore:
+        - 'docs/**'    # Do Not Trigger when files in the docs directory change
+        - 'tests/*.py' # Do not Trigger when any Python test file changes
+
+    pull_request:
+        branches:
+        - main         # Trigger on PRs targeting main branch
+        - develop      # Trigger on PRs targeting develop branch
+        paths:
+        - 'src/**'     # Trigger on changes in any file within the src directory
+        - 'config/*.yml' # Trigger on changes to any YAML file in the config directory
+        types:
+        - opened
+        - synchronize
+        - reopened
+
+
+jobs:
+  e3-events-filters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: printing name
+        run: echo "Hello from e3-events-filters"
+      - name: print date
+        run: date; echo "goodbye from e3-events-filters"

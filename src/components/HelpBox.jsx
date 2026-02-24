@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 import { string } from 'prop-types';
 
+>>>>>>> SIT
 import './HelpBox.css';
 
 function HelpBox({ title, text }) {
@@ -11,9 +14,12 @@ function HelpBox({ title, text }) {
   );
 }
 
+<<<<<<< HEAD
+=======
 HelpBox.propTypes = {
   title: string,
   text: string,
 };
 
+>>>>>>> SIT
 export default HelpBox;

@@ -1,0 +1,21 @@
+name: Deploy to S3
+description: GitHub Javascript Composite Action to deploy files to S3
+
+inputs:
+  bucket:
+    description: "The S3 Bucket Name"
+    required: true
+  bucket-region:
+    description: "The S3 Bucket Region"
+    required: false
+    default: "us-east-1"
+  dist-folder:
+    description: "The folder to be deployed"
+    required: true
+outputs:
+  websiteUrl:
+    description: "URL of the live S3 website"
+
+runs:
+  using: "node20"
+  main: "main.js"

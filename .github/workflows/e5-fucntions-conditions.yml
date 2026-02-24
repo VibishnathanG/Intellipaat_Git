@@ -1,0 +1,192 @@
+name: E5 Caching and Action call
+on: workflow_dispatch
+#   push:
+#     branches:
+#       - DEV
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v6
+
+# Calling Composite Actions -- Self Actions under /actions
+      - name: Load cache dependencies
+        uses: ./.github/actions
+        with:
+          caching: 'true'
+
+      - name: Lint code
+        continue-on-error: true
+        run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v6
+
+# Calling Composite Actions -- Self Actions under /actions
+      - name: Load cache dependencies
+        uses: ./.github/actions
+
+      - name: Test code
+        continue-on-error: true
+        id: test-block
+        run: npm run test
+
+      - name: Upload test report
+        if: failure() && steps.test-block.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-report
+          path: test.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v6
+
+# Calling Composite Actions -- Self Actions under /actions
+      - name: Load cache dependencies
+        id: "build-cache"
+        uses: ./.github/actions
+        with:
+          caching: 'false'
+      
+      - name: Output Printing
+        run: echo "Cache Used? ${{ steps.build-cache.outputs.used-cache }}"
+
+      - name: Build website
+        id: build-website
+        run: npm run build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist-files
+          path: dist
+
+#Docker Actions from cross repo
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v6
+
+      - name: Get build artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: dist-files
+          path: dist
+      
+      - name: Output
+        run: |
+          ls -lant
+          echo ${{ secrets.AWS_ROLE_TO_ASSUME }}
+
+      - name: Get AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Docker Build
+        uses: VibishnathanG/github-actions-awsS3@v3
+        id: docker-deploy
+        # env:
+        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+        with:
+          bucket: "vibish-s3-actions-2026"
+          folder_path: dist
+
+      # - name: Dump docker logs on failure
+      #   if: failure()
+      #   uses: jwalton/gh-docker-logs@v2
+
+      - name: Output Printing
+        run: |
+          echo "Bucket: ${{ steps.docker-deploy.outputs }}"
+
+
+# #Docker Actions
+
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get code
+#         uses: actions/checkout@v6
+
+#       - name: Get build artifacts
+#         uses: actions/download-artifact@v6
+#         with:
+#           name: dist-files
+#           path: dist
+      
+#       - name: Output
+#         run: ls -lant
+
+#       - name: Docker Build
+#         uses: ./.github/actions/deploy-s3-docker
+#         id: docker-deploy
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         with:
+#           bucket: "vibish-s3-actions-2026"
+      
+#       - name: Output Printing
+#         run: |
+#           echo "Bucket: ${{ steps.docker-deploy.outputs.bucket_v }}"
+
+          
+
+# Below is the Deploy with JS Actions
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get code
+  #       uses: actions/checkout@v6
+
+  #     - name: Get build artifacts
+  #       uses: actions/download-artifact@v6
+  #       with:
+  #         name: dist-files
+  #         path: dist
+
+  #     - name: Output contents
+  #       run: ls
+        
+  #     - name: Deploy
+  #       uses: ./.github/actions/deploy-s3-js
+  #       id: deploy-s3
+  #       env:
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       with:
+  #         dist-folder: dist
+  #         bucket: "vibish-s3-actions-2026"
+
+  #     - name: Website URL
+  #       run: |
+  #         echo "URL at: ${{ steps.deploy-s3.outputs.websiteUrl}}"
+         
+
+  report:
+    needs: [lint, deploy]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Pipeline Failed
+        run: echo "Pipeline Is having issue Please Check"

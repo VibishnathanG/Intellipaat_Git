@@ -1,0 +1,20 @@
+name: E2-issue-triggered-workflow
+on: workflow_dispatch
+  # issues:
+  #   types: [opened, edited, milestoned]
+jobs:
+  issue_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Print Issue Info
+        run: |
+          echo "An issue event has been triggered."
+          echo "Issue Title: ${{ github.event.issue.title }}"
+          echo "Issue Body: ${{ github.event.issue.body }}"
+          echo "Actor ID: ${{ github.actor.id}}"
+          echo "Printing All github variable: ${{ toJson(github) }}"
+          
+          

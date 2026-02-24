@@ -1,0 +1,21 @@
+name: Docker Action
+description: Docker Sample actions
+inputs:
+  bucket:
+    description: 'S3 Bucket Name'
+    required: true
+  bucket_region:
+    description: 'S3 Bucket Region'
+    required: false
+    default: "us-east-1"
+  dist_folder:
+    description: 'Dist Folder Path'
+    required: true
+    default: "dist"
+outputs:
+  website-url:
+    description: 'The URL of the website'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

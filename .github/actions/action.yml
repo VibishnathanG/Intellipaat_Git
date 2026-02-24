@@ -1,0 +1,29 @@
+name: "Get & and Cache the dependencies"
+description: "Composite Fucntion used for cacheing"
+inputs:
+  caching:
+    description: "Can Cache?"
+    required: true
+    default: 'true'
+outputs:
+  used-cache:
+    description: "Cache is used ?"
+    value: ${{ steps.install.outputs.cache }}
+runs:
+  using: 'composite'
+  steps:
+      - name: Cache dependencies
+        if: inputs.caching == 'true'
+        id: cache
+        uses: actions/cache@v5
+        with:
+          path: ./node_modules/
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        id: install
+        if: steps.cache.outputs.cache-hit != 'true' || inputs.caching == 'false'
+        run: |
+          npm ci
+          npm install
+          echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
+        shell: bash

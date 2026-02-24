@@ -1,4 +1,10 @@
+dist/
 *.log
 *.logg
+<<<<<<< HEAD
 /dist
 /node_modules
+=======
+node_modules/
+test.json
+>>>>>>> SIT

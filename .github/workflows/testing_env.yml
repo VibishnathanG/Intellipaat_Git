@@ -1,16 +1,6 @@
-# This is a basic workflow to help you get started with Actions
+name: Context Objects
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # # Triggers the workflow on push or pull request events but only for the "DEV" branch
-  # push:
-  #   branches: [ "DEV" ]
-  # pull_request:
-  #   branches: [ "DEV" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       dispatch_user:
@@ -18,31 +8,32 @@ on:
         description: Who is running this?
         required: true
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  debug:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Print All Contexts
+        run: |
+          echo "GITHUB CONTEXT"
+          echo '${{ toJson(github) }}' | jq
 
-      # Print all GITHUB env context
-      - name: Prinitng github env
-        run: echo ${{ github }}
+          echo "JOB CONTEXT"
+          echo '${{ toJson(job) }}' | jq
 
-      - name: Prinitng Job env
-        run: echo ${{ job }}
+          echo "RUNNER CONTEXT"
+          echo '${{ toJson(runner) }}' | jq
 
-      - name: Printing runner
-        run: echo ${{ runner }}
+          echo "STRATEGY CONTEXT"
+          echo '${{ toJson(strategy) }}' | jq
 
-      - name: Printing steps
-        run: echo ${{ steps }}
+          echo "MATRIX CONTEXT"
+          echo '${{ toJson(matrix) }}' | jq
+
+          echo "ENV CONTEXT"
+          echo '${{ toJson(env) }}' | jq
+
+          echo "VARS CONTEXT"
+          echo '${{ toJson(vars) }}' | jq
